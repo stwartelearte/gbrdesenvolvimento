@@ -257,3 +257,49 @@
     min-height: 220px;
   }
 }
+
+/* Cards estáticos de diferenciais */
+.why .why-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.why-card {
+  min-height: 300px;
+  padding-bottom: 26px;
+  cursor: default;
+}
+
+.why-card:hover,
+.why-card:focus-visible,
+.why-card.is-active {
+  flex: 1 1 0;
+  transform: translateY(-4px);
+}
+
+.why-card p,
+.why-card:hover p,
+.why-card:focus-visible p,
+.why-card.is-active p {
+  max-height: none;
+  margin-top: 14px;
+  overflow: visible;
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 1050px) {
+  .why .why-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .why .why-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .why-card {
+    min-height: auto;
+  }
+}
