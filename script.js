@@ -10,6 +10,7 @@
   /* ---- Mobile menu ---- */
   function closeMenu() {
     if (!toggle || !nav) return;
+    nav.classList.remove('is-open');
     document.body.classList.remove('menu-open');
     toggle.setAttribute('aria-expanded', 'false');
     toggle.setAttribute('aria-label', 'Abrir menu');
