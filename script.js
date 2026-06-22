@@ -1,102 +1,69 @@
-const header = document.querySelector('.site-header');
-const menuToggle = document.querySelector('.menu-toggle');
-const siteNav = document.querySelector('.site-nav');
-const internalLinks = document.querySelectorAll('a[href^="#"]');
-const revealElements = document.querySelectorAll('.reveal');
-const proposalForm = document.querySelector('#proposal-form');
-const formFeedback = document.querySelector('#form-feedback');
+(function () {
+  'use strict';
 
-function getHeaderHeight() {
-  return header ? header.offsetHeight : 0;
-}
+  const header = document.querySelector('.site-header');
+  const toggle = document.querySelector('.menu-toggle');
+  const nav = document.querySelector('.site-nav');
+  const links = document.querySelectorAll('a[href^="#"]');
+  const reveals = document.querySelectorAll('.reveal');
 
-function closeMenu() {
-  if (!menuToggle || !siteNav) return;
-  document.body.classList.remove('menu-open');
-  siteNav.classList.remove('is-open');
-  siteNav.style.transform = '';
-  menuToggle.setAttribute('aria-expanded', 'false');
-  menuToggle.setAttribute('aria-label', 'Abrir menu');
-}
-
-function toggleMenu() {
-  if (!menuToggle || !siteNav) return;
-  const isOpen = siteNav.classList.toggle('is-open');
-  document.body.classList.toggle('menu-open', isOpen);
-  siteNav.style.transform = isOpen ? 'translateY(0)' : '';
-  menuToggle.setAttribute('aria-expanded', String(isOpen));
-  menuToggle.setAttribute('aria-label', isOpen ? 'Fechar menu' : 'Abrir menu');
-}
-
-if (menuToggle) {
-  menuToggle.addEventListener('click', toggleMenu);
-}
-
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') {
-    closeMenu();
+  /* ---- Mobile menu ---- */
+  function closeMenu() {
+    if (!toggle || !nav) return;
+    document.body.classList.remove('menu-open');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'Abrir menu');
   }
-});
 
-internalLinks.forEach((link) => {
-  link.addEventListener('click', (event) => {
-    const targetId = link.getAttribute('href');
-    if (!targetId || targetId === '#') return;
+  function toggleMenu() {
+    if (!toggle || !nav) return;
+    const open = nav.classList.toggle('is-open');
+    document.body.classList.toggle('menu-open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+  }
 
-    const target = document.querySelector(targetId);
-    if (!target) return;
+  if (toggle) {
+    toggle.addEventListener('click', toggleMenu);
+  }
 
-    event.preventDefault();
-    closeMenu();
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeMenu();
+  });
 
-    const top = target.getBoundingClientRect().top + window.scrollY - getHeaderHeight() - 12;
-    window.scrollTo({
-      top,
-      behavior: 'smooth',
+  /* ---- Smooth scroll for anchor links ---- */
+  links.forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var targetId = link.getAttribute('href');
+      if (!targetId || targetId === '#') return;
+
+      var target = document.querySelector(targetId);
+      if (!target) return;
+
+      e.preventDefault();
+      closeMenu();
+
+      var top = target.getBoundingClientRect().top + window.scrollY - (header ? header.offsetHeight : 0) - 12;
+      window.scrollTo({ top: top, behavior: 'smooth' });
     });
   });
-});
 
-if ('IntersectionObserver' in window) {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, {
-    threshold: 0.14,
-  });
+  /* ---- Scroll reveal with IntersectionObserver ---- */
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
 
-  revealElements.forEach((element) => observer.observe(element));
-} else {
-  revealElements.forEach((element) => element.classList.add('is-visible'));
-}
-
-if (proposalForm) {
-  proposalForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-
-    const formData = new FormData(proposalForm);
-    const name = String(formData.get('name') || '').trim();
-    const email = String(formData.get('email') || '').trim();
-    const phone = String(formData.get('phone') || '').trim();
-    const message = String(formData.get('message') || '').trim();
-
-    const whatsappMessage = [
-      'Olá, GBR Desenvolvimento! Gostaria de solicitar uma proposta.',
-      name ? `Nome: ${name}` : '',
-      email ? `E-mail: ${email}` : '',
-      phone ? `WhatsApp: ${phone}` : '',
-      message ? `Mensagem: ${message}` : '',
-    ].filter(Boolean).join('\n');
-
-    if (formFeedback) {
-      formFeedback.textContent = 'Abrindo WhatsApp com sua solicitação...';
-    }
-
-    const url = `https://wa.me/5549999266308?text=${encodeURIComponent(whatsappMessage)}`;
-    window.open(url, '_blank', 'noopener');
-  });
-}
+    reveals.forEach(function (el) { observer.observe(el); });
+  } else {
+    reveals.forEach(function (el) { el.classList.add('is-visible'); });
+  }
+})();
