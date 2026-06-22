@@ -6,6 +6,7 @@
   const nav = document.querySelector('.site-nav');
   const links = document.querySelectorAll('a[href^="#"]');
   const reveals = document.querySelectorAll('.reveal');
+  const whyCards = document.querySelectorAll('.why-card');
 
   /* ---- Mobile menu ---- */
   function closeMenu() {
@@ -27,6 +28,23 @@
   if (toggle) {
     toggle.addEventListener('click', toggleMenu);
   }
+
+  /* ---- Expandable differential cards ---- */
+  whyCards.forEach(function (card) {
+    card.addEventListener('click', function () {
+      var willOpen = !card.classList.contains('is-active');
+
+      whyCards.forEach(function (otherCard) {
+        otherCard.classList.remove('is-active');
+        otherCard.setAttribute('aria-expanded', 'false');
+      });
+
+      if (willOpen) {
+        card.classList.add('is-active');
+        card.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
 
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') closeMenu();
