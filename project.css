@@ -1,0 +1,90 @@
+/* Projeto ConstruFlow */
+.construflow-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.construflow-visual::before {
+  content: "";
+  position: absolute;
+  inset: 8% 4%;
+  border-radius: 50%;
+  background: rgba(255, 112, 0, 0.2);
+  filter: blur(60px);
+}
+
+.construflow-visual img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: min(100%, 470px);
+  height: auto;
+  border-radius: 22%;
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.48);
+  transition: transform 0.3s ease;
+}
+
+.construflow-visual:hover img {
+  transform: translateY(-5px);
+}
+
+.project-status {
+  position: absolute;
+  z-index: 2;
+  right: 4%;
+  bottom: 5%;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 13px;
+  border: 1px solid rgba(255, 126, 20, 0.4);
+  border-radius: 999px;
+  background: rgba(9, 19, 33, 0.92);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  backdrop-filter: blur(10px);
+}
+
+.project-status i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ff7a0b;
+  box-shadow: 0 0 12px #ff7a0b;
+}
+
+.case-copy .project-features {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 14px;
+}
+
+.case-copy .project-features li {
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 126, 20, 0.13);
+  border-radius: 9px;
+  background: rgba(255, 126, 20, 0.045);
+}
+
+.case-copy .project-features li::before {
+  color: #ff7a0b;
+}
+
+@media (max-width: 720px) {
+  .construflow-visual {
+    padding: 4px 0 18px;
+  }
+
+  .project-status {
+    right: 2%;
+    bottom: 1%;
+  }
+
+  .case-copy .project-features {
+    grid-template-columns: 1fr;
+  }
+}
